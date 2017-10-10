@@ -5,21 +5,21 @@
   
   <title>Apple Health Data Analysis | Preprocessed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Are you more active on trips?">
+  <meta name="description" content="Are we more active while away?">
 <meta name="keywords" content="Python,Data Analysis,Jupyter Notebook,Xml,Apple Health,Plotly">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Apple Health Data Analysis">
 <meta property="og:url" content="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/index.html">
 <meta property="og:site_name" content="Preprocessed">
-<meta property="og:description" content="Are you more active on trips?">
+<meta property="og:description" content="Are we more active while away?">
 <meta property="og:image" content="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/images/img1.jpg">
 <meta property="og:image" content="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/images/img2.jpg">
 <meta property="og:image" content="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/images/img3.jpg">
 <meta property="og:image" content="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/images/img4.jpg">
-<meta property="og:updated_time" content="2017-10-09T18:54:53.000Z">
+<meta property="og:updated_time" content="2017-10-10T21:04:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Apple Health Data Analysis">
-<meta name="twitter:description" content="Are you more active on trips?">
+<meta name="twitter:description" content="Are we more active while away?">
 <meta name="twitter:image" content="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/images/img1.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Preprocessed" type="application/atom+xml">
@@ -109,21 +109,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="Are-you-more-active-on-trips"><a href="#Are-you-more-active-on-trips" class="headerlink" title="Are you more active on trips?"></a>Are you more active on trips?</h3><a id="more"></a> 
-<h4 id="1-Motivation"><a href="#1-Motivation" class="headerlink" title="1. Motivation"></a>1. Motivation</h4><p>This idea came in to my head out of nowhere long time ago and I started wondering if there is any data available on this matter. It turns out that Apple allows you to export your Health data from your iPhone in an xml format (yayx!)</p>
-<p>It looks like IOS keeps track of all our walks and runs and records it every N seconds as a timestamp and kilometers. </p>
-<p>But hey. What about the trip data? How can we collect it and where from? Scroll down to see what can be done about that ;-)</p>
-<p>Here’s what we’ll do in this post:</p>
+        <h3 id="Are-we-more-active-while-away"><a href="#Are-we-more-active-while-away" class="headerlink" title="Are we more active while away?"></a>Are we more active while away?</h3><a id="more"></a> 
+<h4 id="1-Motivation"><a href="#1-Motivation" class="headerlink" title="1. Motivation"></a>1. Motivation</h4><p>This idea came in to my head out of nowhere long time ago, and then I started wondering if there is any data available on this matter. It turns out that Apple allows you to export your Health data from your iPhone in an xml format (yayx!)</p>
+<p>IOS keeps track of your movements, and dumps it into the local database every couple of seconds. It is stored as a timestamp and a distance walked or run.</p>
+<p>But hey. How and where can we find the data about our travel activities? I will get back to this in the second part of this post, please be patient :-)</p>
+<p>Here’s what we’ll do in this article:</p>
 <ul>
-<li><a href="#link21">collect Apple Health data from an iPhone</a></li>
-<li><a href="#link22">load the Health data into Jupyter Notebook and analyse it</a></li>
-<li><a href="#link23">collect trip dates</a></li>
-<li><a href="#link24">overlay trip dates on top of the Apple Health data</a></li>
+<li><a href="#link21">Collect Apple Health data from an iPhone</a></li>
+<li><a href="#link22">Load the Health data into Jupyter Notebook and analyse it</a></li>
+<li><a href="#link23">Gather time away dates</a></li>
+<li><a href="#link24">Overlay time away dates on top of the Health Data</a></li>
 </ul>
 <p>Sounds interesting? I know!</p>
 <h4 id="2-Let’s-get-our-hands-dirty"><a href="#2-Let’s-get-our-hands-dirty" class="headerlink" title="2. Let’s get our hands dirty!"></a>2. Let’s get our hands dirty!</h4><p><a name="link21"></a></p>
 <h5 id="2-1-Collect-Apple-Health-data-from-an-iPhone"><a href="#2-1-Collect-Apple-Health-data-from-an-iPhone" class="headerlink" title="2.1 Collect Apple Health data from an iPhone"></a>2.1 Collect Apple Health data from an iPhone</h5><p></p>
-<p>Thanks to a great <a href="http://www.idownloadblog.com/2015/06/10/how-to-export-import-health-data" target="_blank" rel="external">article</a> from 2015 by Sebastien Page - I knew that this is possible, however in the new IOS (11.x as of this article) - the method is slightly different and from the Health App you must click on the user icon in the top right corner (image 1 below) of the display and click on the Export Health Data link (image 2 below). This will send you a zipped xml file into your mailbox. Don’t worry, it’s not huge (~2.5MB for my 3 years of data):</p>
+<p>Thanks to a great <a href="http://www.idownloadblog.com/2015/06/10/how-to-export-import-health-data" target="_blank" rel="external">article</a> from 2015 by Sebastien Page - I knew that this is possible. However in the current IOS (11.x) - the method is slightly different. </p>
+<p>To begin you must click on the User Icon in the top right corner (Step 1), and click on the Export Health Data link (Step 2). This will drop a zipped xml file into your mailbox. Don’t worry, it’s not huge (it was ~2.5MB for my 3 years of health data):</p>
 
 <div class="row" style="width: 100%;">
     <div class="pull-left col-sm-3" style="float: left; width: 30%;">
@@ -140,8 +141,8 @@
     </div>
 </div>
 
-<p>If you don’t have an iPhone, hmmm… there is something for Android too (S-Health?), but it looks a bit complicated as of September 2017. Feel free to follow along though, just for fun!</p>
-<p><strong>Warning:</strong><br>You probably need to enable GPS and Location services on your phone for this to work.</p>
+<p>If you don’t have an iPhone, then there is something for Android too (S-Health?), but it looks a bit complicated as of September 2017 and I won’t be covering it in this post.</p>
+<p><strong>Note:</strong><br>You probably need to enable GPS and Location services on your iPhone for this to work.</p>
 <p><a name="link22"></a></p>
 <h5 id="2-2-Load-and-analyse-health-data-in-the-Jupyter-Notebook"><a href="#2-2-Load-and-analyse-health-data-in-the-Jupyter-Notebook" class="headerlink" title="2.2 Load and analyse health data in the Jupyter Notebook"></a>2.2 Load and analyse health data in the Jupyter Notebook</h5><p></p>
 <p>Here is the Notebook:</p>
@@ -150,47 +151,44 @@
         <iframe src="notebooks/My+Apple+Health+Data+Analysis.html" width="100%" height="600" frameborder="0"></iframe>
     </div>
 
-<p>So, we can now see the weekly (and yearly) characteristics of our activities recorded on an iPhone. Cool! But it’s time to take it to the next level.</p>
+<p>Now we can see the characteristics of our activities recorded on an iPhone.<br>Cool! But it’s time to take it to the next level.</p>
 <p><a name="link23"></a></p>
-<h5 id="2-3-Collect-trip-dates"><a href="#2-3-Collect-trip-dates" class="headerlink" title="2.3 Collect trip dates"></a>2.3 Collect trip dates</h5><p></p>
-<p>This may sound like a daunting task and it kind of is (as often data collection is).</p>
-<p>One of the ways to do that is to search for an occurance of “Itinerary” word inside your mail client. And that is exactly what I did here:</p>
+<h5 id="2-3-Gather-time-away-dates"><a href="#2-3-Gather-time-away-dates" class="headerlink" title="2.3 Gather time away dates"></a>2.3 Gather time away dates</h5><p></p>
+<p>This may seem daunting and it kind of is (as data collection often is).<br>One of the ways to achieve it, is to search for an occurance of an “Itinerary” word inside your mail client.<br>And that is exactly what I did here:</p>
 <img src="/preprocessed/2017/09/30/apple-health-data-analysis/images/img3.jpg" alt="Gmail search" title="Gmail search">
-<p>Just in case you are wondering, I actually don’t mind you seeing that I’m travelling to Zanzibar in November 2017 cause I’m simpy super excited about that trip ;-)</p>
-<p>The main question is though: what now?</p>
-<p>Well, with a bit of copy &amp; paste, BBC magic, manual inspection and Python reg-ex code we can turn the gmail Itinerary data into useful information. Here is the Notebook:</p>
+<p>Now, with a bit of copy &amp; paste, BBC magic, manual inspection and Python reg-ex code we can turn the gmail Itinerary data into useful information.<br>Here is the Notebook:</p>
 
     <div class="notebook-outset">
         <iframe src="notebooks/Trip+Data+Analysis.html" width="100%" height="600" frameborder="0"></iframe>
     </div>
 
-<p>So now that we have both data elements collected and stored as clean csv files - let’s compare them.</p>
+<p>At this stage, when we have both data elements collected and stored as clean csv files - let’s compare them.</p>
 <p><a name="link24"></a></p>
-<h5 id="2-4-Overlay-Itinerary-dates-on-top-of-the-step-counter"><a href="#2-4-Overlay-Itinerary-dates-on-top-of-the-step-counter" class="headerlink" title="2.4 Overlay Itinerary dates on top of the step counter"></a>2.4 Overlay Itinerary dates on top of the step counter</h5><p></p>
-<p>This will be the final Notebook in this post. It will be interesting to see if there are clear patterns in the data showing more or less activity over the time away.</p>
+<h5 id="2-4-Overlay-Itinerary-dates-on-top-of-the-Health-Data"><a href="#2-4-Overlay-Itinerary-dates-on-top-of-the-Health-Data" class="headerlink" title="2.4 Overlay Itinerary dates on top of the Health Data"></a>2.4 Overlay Itinerary dates on top of the Health Data</h5><p></p>
+<p>This is the final Notebook in this post.<br>It will be interesting to see, if there are clear patterns in our activity over the time away.</p>
 
     <div class="notebook-outset">
         <iframe src="notebooks/Trip+Vs+Non-Trip+Activity+Comparison.html" width="100%" height="600" frameborder="0"></iframe>
     </div>
 
-<h4 id="3-Conclusions"><a href="#3-Conclusions" class="headerlink" title="3. Conclusions"></a>3. Conclusions</h4><p>And so we have reached here. It turns out that the difference in the activity patterns while at home an away (no pun intented) is rather minor. It looks like, while away, I tend to walk/run more by <strong>~500 meters</strong> per day on average.</p>
-<p>I guess one interesting finding is around the fact that I am quite active while away (not only laying on the beach with a bubbly Aperol Spritz on the side, but also walking and running quite a bit).</p>
-<p>If we take a look at the last plotly visualisation and zoom in on a random trip period - we can see that the y axis (kilometers) is actually quite high while being on the trips (indicated by the blue cross markers):</p>
+<h4 id="3-Conclusions"><a href="#3-Conclusions" class="headerlink" title="3. Conclusions"></a>3. Conclusions</h4><p>It turns out that the difference in the activity patterns while at home or away, is rather minor. It seems that while away, I tend to walk/run more by <strong>~500 meters</strong> a day on average.</p>
+<p>One of the interesting findings, is that I am quite active while away (not only laying on the beach with a bubbly Aperol Spritz on the side).</p>
+<p>If we take a look at the last plotly visualisation and zoom in on a random travel period - we can see that the y axis (kilometers) is actually quite high while being away (as indicated by the blue cross markers):</p>
 <img src="/preprocessed/2017/09/30/apple-health-data-analysis/images/img4.jpg" alt="Trip vs Non-trip Vis" title="Trip vs Non-trip Vis">
-<p>But there is definitely a catch here. First: I can not guarantee that the Apple measurements are perfectly correct. Then: while at hometown - I play basketball, excercise at the gym and do TRX classes quite regularly, which is not accounted for in the dataset. On the contrary - while away - I usually excercise (swim or gym) as well.</p>
-<p>So basically it was an interesting excercise where I learned quite a abit about my lifestyle, but drawing black and white conclusions would be rather naive.</p>
-<p>Plus learning the massive API of plotly was a bonus ;-)</p>
-<p>So what’s next?</p>
-<p>The way I came up with the conclusion that the difference between the trip and non-trip time periods was minor was not very scientific (appart from a simple t-test). There are papers about the proper scientific approaches, which I am planning to explore.</p>
-<p>In an undefined time I am planning to buy an Apple Watch, which will record data more often (even while swimming and playing basket!) and it will give me a chance to take a look at other interesting measurements like the heart beat for example.</p>
-<p>And last but not least - every time I hop off on the cycling machine at the gym - I take a photo with the final results from the screen (time, distance and the pulse). Using a few computer vision tricks I could extract that data as well and somehow merge it into the existing Apple Health data. I’m just too lazy to do that at this stage as I have more cool ideas for another posts ;-)</p>
-<p>Anyways, I hope that it was somewhat enjoyable and please leave a comment below if you have any thoughts or ideas about how to improve this experiment (Eeeee: comment section is WIP, sorry ;).</p>
+<p>But there is definitely a catch here:<br>First: It’s not guaranteed that the Apple measurements are 100% accurate.<br>Then: some activities while at home or away are not accounted for in the dataset (basketball, gym, TRX, swimming), which could influence the final results.</p>
+<p>In summary, it was an interesting excercise, where I’ve learned quite a bit about my lifestyle, but drawing black and white conclusions would be rather naive.</p>
+<p>As a bonus - figuring out the super-massive API of plotly was quite a joy -;)</p>
+<h4 id="What’s-next"><a href="#What’s-next" class="headerlink" title="What’s next?"></a>What’s next?</h4><p>For starters, there are more scientific approaches on comparing Time Series groups available, which I am planning to explore.</p>
+<p>At this stage, buying an Apple Watch with it’s ability to record more data more often, could be an interesting idea.</p>
+<p>And last but not least - every time I hop off the bike in the gym - I take a snap of the final results (time, distance and pulse).<br>Using a few Computer Vision tricks could make the Health data-set more complete.</p>
+<p>I really hope, that this post was somewhat enjoyable to check out.</p>
+<p>If you have any thoughts or ideas about how to improve this experiment, please leave a comment below or let me know.</p>
 <p>Peace and see you next time!</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/" data-id="cj8lzr3gv000085r6qqh3ovjh" class="article-share-link">Share</a>
+      <a data-url="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/" data-id="cj8m3i0yy0000slr63i0ck7et" class="article-share-link">Share</a>
       
         <a href="https://alchemication.github.io/preprocessed/2017/09/30/apple-health-data-analysis/#disqus_thread" class="article-comment-link">Comments</a>
       
